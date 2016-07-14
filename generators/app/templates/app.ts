@@ -5,48 +5,57 @@ import * as DebugModule from "debug";
 import * as Http from "http";
 import {addControllersToExpressApp} from "kwyjibo";
 
-// HACK: this must be done. Otherwise kwyjibo wont find the controllers
-/* tslint:disable */
-let controllers = require("require-all")({
-    dirname: __dirname + "/controllers",
-    excludeDirs: /^\.(git|svn)$/,
-    recursive: true
-});
-/* tslint:enable */
-
-// HACK: this must be done. Otherwise kwyjibo wont find the tests
-/* tslint:disable */
-let tests = require("require-all")({
-    dirname: __dirname + "/tests",
-    excludeDirs: /^\.(git|svn)$/,
-    recursive: true
-});
-/* tslint:enable */
-
-class App {
+export default class App {
 
     private static port: number = App.normalizePort(process.env.port || "3000");
     private static server: Http.Server;
     private static express: Express.Express;
     private static isDevelopment = false;
+    private static securityProvider: SecurityProvider;
 
-    public static start(): void {
+    public static get authorize(): Express.Handler {
+        return App.securityProvider.getAuthorizeMiddleware();
+    }
 
-        App.express = Express();
+    public static get authenticate(): Express.Handler {
+        return App.securityProvider.getAuthenticateMiddleware()
+    }
 
+    public static init(): void {
         if (process.env.NODE_ENV === "development") {
             App.isDevelopment = true;
         }
+
+        App.express = Express();
 
         App.express.use(BodyParser.json());
         App.express.use(BodyParser.urlencoded({ extended: false }));
         App.express.use(CookieParser());
 
+        App.securityProvider = {
+            getAuthorizeMiddleware(): Express.Handler {
+                return (req, res, next) => {
+                    console.log(`The request to ${req.path} requires an authenticated user`);
+                    next();
+                }
+            },
+
+            getAuthenticateMiddleware(): Express.Handler {
+                return (req, res, next) => {
+                    // do the authentication
+                    next();
+                }
+            }
+        }
+    }
+
+    public static start(): void {
+
         // Create HTTP server.
         App.server = Http.createServer(App.express);
 
         // Init all Kwyjibo controllers
-        addControllersToExpressApp(App.express);
+        addControllersToExpressApp(App.express, "controllers", "tests");
 
         // Use custom errors
         App.express.use(App.OnRequestError);
@@ -133,4 +142,9 @@ class App {
     }
 }
 
+interface SecurityProvider {
+    getAuthorizeMiddleware(): Express.Handler;
+    getAuthenticateMiddleware(): Express.Handler;
+}
+App.init();
 App.start();

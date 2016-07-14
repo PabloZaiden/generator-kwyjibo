@@ -1,5 +1,5 @@
 import {Controller, DocController, DocAction, Get, Context} from "kwyjibo";
-import * as K from 'kwyjibo';
+import * as K from "kwyjibo";
 
 @K.Dev()
 @Controller("/dev")
@@ -8,6 +8,11 @@ export default class Dev {
 
     @DocAction("Does something, only for dev")
     doSomething(context: Context): Object {
-        return {result: "This can only be hit in dev"};
+        return { result: "This can only be hit in dev" };
+    }
+
+    @DocAction("Shows the app documentation")
+    docs(): string {
+        return K.getDocsAsHTML();
     }
 }

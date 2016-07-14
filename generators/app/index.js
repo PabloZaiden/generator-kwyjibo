@@ -58,6 +58,11 @@ module.exports = yeoman.Base.extend({
       this.props
     );
 
+    this.fs.copy(
+      this.templatePath('controllers/frontend.ts'),
+      this.destinationPath('controllers/frontend.ts')
+    );
+
     if (this.props.apiController) {
       this.fs.copy(
         this.templatePath('controllers/api.ts'),

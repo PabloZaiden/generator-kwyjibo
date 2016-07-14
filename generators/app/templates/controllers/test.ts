@@ -1,5 +1,5 @@
 import {Controller, DocController, DocAction, Get, Context, Dev, TestRunner} from "kwyjibo";
-import * as K from 'kwyjibo';
+import * as K from "kwyjibo";
 
 @Dev()
 @TestRunner()
