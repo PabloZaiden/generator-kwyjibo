@@ -91,7 +91,7 @@ export default class App {
         res.sendStatus(404);
     }
 
-    private static normalizePort(val): any {
+    private static normalizePort(val: string): any {
         let port = parseInt(val, 10);
 
         if (isNaN(port)) {
@@ -107,7 +107,7 @@ export default class App {
         return false;
     }
 
-    private static onError(error): void {
+    private static onError(error: any): void {
 
         if (error.syscall !== "listen") {
             throw error;
