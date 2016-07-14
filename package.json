@@ -1,6 +1,6 @@
 {
   "name": "generator-kwyjibo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Scaffold a new express app using the Kwyjibo framework",
   "homepage": "https://github.com/zlash/kwyjibo",
   "author": {
@@ -16,7 +16,9 @@
     "",
     "yeoman-generator",
     "express",
-    "kwyjibo"
+    "kwyjibo",
+    "typescript",
+    "mvc"
   ],
   "dependencies": {
     "yeoman-generator": "^0.23.0",
