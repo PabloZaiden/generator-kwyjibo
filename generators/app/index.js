@@ -51,6 +51,11 @@ module.exports = yeoman.Base.extend({
       this.templatePath('tsconfig.json'),
       this.destinationPath('tsconfig.json')
     );
+
+    this.fs.copy(
+      this.templatePath('.vscode'),
+      this.destinationPath('.vscode')
+    );
     
     this.fs.copyTpl(
       this.templatePath('app.ts'),
