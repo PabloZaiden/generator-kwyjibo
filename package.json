@@ -1,6 +1,6 @@
 {
   "name": "generator-kwyjibo",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Scaffold a new express app using the Kwyjibo framework",
   "homepage": "https://github.com/zlash/kwyjibo",
   "author": {

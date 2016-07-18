@@ -1,4 +1,5 @@
 import {DocController, DocAction, Get, Context, ActionMiddleware, Controller} from "kwyjibo";
+import * as K from "kwyjibo";
 import App from "../app";
 
 @Controller("/frontend")
@@ -16,7 +17,7 @@ class Root {
     @ActionMiddleware(App.authenticate)
     goToAuthentication(context: Context): void {
         // once you get here, the user will be successfully authenticated
-        context.response.redirect("/authorized");
+        context.response.redirect(K.getActionRoute(Root, "onlyForUsers"));
     }
 
     @Get("/authorized")

@@ -8,13 +8,17 @@ export default class Fixture {
     }
 
     @K.Test("A test that passes")
-    test1(): void {
-        // this test will pass
+    test1(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            if (1 !== 1) {
+                reject (new Error("equality is failing!!!"))
+            }
+        });
     }
 
     @K.Test("A test that fails")
     test2(): void {
-        throw new Error('failed test!');
+        throw new Error("failed test!");
     }
 
     @K.After()
