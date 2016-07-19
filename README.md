@@ -5,10 +5,10 @@ Scaffold a new express app using the [Kwyjibo](https://github.com/zlash/kwyjibo)
 
 Easy!
 - Install TypeScript 2.0 (beta) Yeoman, and the generator:
-`npm install --global typescript@beta yo generator-kwyjibo`
+  - `npm install --global typescript@beta yo generator-kwyjibo`
 
-- Start the generator
-`yo kwyjibo`
+- Start the generator:
+  - `yo kwyjibo`
 
 ## How to use kwyjibo?
 
