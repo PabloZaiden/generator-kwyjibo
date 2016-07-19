@@ -10,6 +10,6 @@ Easy!
 - Start the generator:
   - `yo kwyjibo`
 
-## How to use kwyjibo?
+## How to use Kwyjibo?
 
-See the documentation [quickstart](https://github.com/zlash/kwyjibo/blob/master/README.md) to know how to use this generator
+See the [framework documentation](https://github.com/zlash/kwyjibo/blob/master/README.md) to know how work with Kwyjibo apps
