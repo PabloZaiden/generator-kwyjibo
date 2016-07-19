@@ -1,4 +1,4 @@
-import {DocController, DocAction, Get, Context, ActionMiddleware, Controller} from "kwyjibo";
+import {DocController, DocAction, Get, Post, Context, ActionMiddleware, Controller} from "kwyjibo";
 import * as K from "kwyjibo";
 import App from "../app";
 
@@ -8,11 +8,16 @@ class Root {
 
     @Get("/")
     @DocAction(`Sample index`)
-    index(context: Context): String {
-        return "<html><body><h1>Hello world</h1></body></html>";
+    index(context: Context): void {
+        context.response.render("helloworld");
     }
 
     @Get("/authenticate")
+    login(context: Context): void {
+        context.response.render("login");
+    }
+
+    @Post("/authenticate")
     @DocAction(`Action that triggers the authentication middleware`)
     @ActionMiddleware(App.authenticate)
     goToAuthentication(context: Context): void {
@@ -23,7 +28,7 @@ class Root {
     @Get("/authorized")
     @DocAction(`Action that verifies that a user is authorized`)
     @ActionMiddleware(App.authorize)
-    onlyForUsers(context: Context): String {
-        return "<html><body><h1>The user is authorized!</h1></body></html>";
+    onlyForUsers(context: Context): void {
+        context.response.render("authorized");
     }
 }

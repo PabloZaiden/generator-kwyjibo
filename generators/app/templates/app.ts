@@ -4,6 +4,9 @@ import * as BodyParser from "body-parser";
 import * as DebugModule from "debug";
 import * as Http from "http";
 import {addControllersToExpressApp} from "kwyjibo";
+import * as Passport from "passport";
+import * as ExpressSession from "express-session";
+import * as PassportLocal from "passport-local";
 
 export default class App {
 
@@ -28,23 +31,48 @@ export default class App {
 
         App.express = Express();
 
+        App.express.set("view engine", "ejs");
+
         App.express.use(BodyParser.json());
         App.express.use(BodyParser.urlencoded({ extended: false }));
         App.express.use(CookieParser());
 
+        App.express.use(ExpressSession({
+            secret: "secretSessionKey",
+            saveUninitialized: true,
+            resave: true
+        }));
+        
+        App.express.use(Passport.initialize());
+        App.express.use(Passport.session());
+
+        Passport.use(new PassportLocal.Strategy((user, pass, done) => {
+            // ignore password, accept user
+            done(null, { username: user });
+        }));
+
+        Passport.serializeUser((user, done) => {
+            done(null, user);
+        });
+
+        Passport.deserializeUser((user, done) => {
+            done(null, user);
+        });
+
         App.securityProvider = {
             getAuthorizeMiddleware(): Express.Handler {
                 return (req, res, next) => {
-                    console.log(`The request to ${req.path} requires an authenticated user`);
-                    next();
+                    if (!req.isAuthenticated()) {
+                        let message = `The request to ${req.path} requires an authenticated user`;
+                        res.status(401).send(message);
+                    } else {
+                        next();
+                    }
                 }
             },
 
             getAuthenticateMiddleware(): Express.Handler {
-                return (req, res, next) => {
-                    // do the authentication
-                    next();
-                }
+                return Passport.authenticate("local");
             }
         }
     }
@@ -56,6 +84,9 @@ export default class App {
 
         // Init all Kwyjibo controllers
         addControllersToExpressApp(App.express, "controllers", "tests");
+
+        // Add static files
+        App.express.use(Express.static("public"));
 
         // Use custom errors
         App.express.use(App.OnRequestError);
