@@ -57,6 +57,16 @@ module.exports = yeoman.Base.extend({
       this.destinationPath('.vscode')
     );
     
+    this.fs.copy(
+      this.templatePath('public'),
+      this.destinationPath('public')
+    );
+
+    this.fs.copy(
+      this.templatePath('views'),
+      this.destinationPath('views')
+    );
+    
     this.fs.copyTpl(
       this.templatePath('app.ts'),
       this.destinationPath('app.ts'),
@@ -96,7 +106,7 @@ module.exports = yeoman.Base.extend({
   },
 
   install: function () {
-    this.npmInstall(['kwyjibo', 'cookie-parser', 'body-parser', 'express', 'debug', 'require-all']);
+    this.npmInstall();
     this.installDependencies();
   }
 });
