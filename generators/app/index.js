@@ -1,36 +1,53 @@
-'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
+"use strict";
+var yeoman = require("yeoman-generator");
+var chalk = require("chalk");
+var yosay = require("yosay");
 
 module.exports = yeoman.Base.extend({
   prompting: function () {
     // Have Yeoman greet the user.
-    this.log(yosay(
-      "Hi! Let's create an awesome app with the " + chalk.red('kwyjibo') + " generator!"
-    ));
+    this.log(
+      "Hi! Let's create an awesome app with the Kwyjibo generator!"
+    );
 
     var prompts = [{
-      type: 'input',
-      name: 'projectName',
-      message: 'Project name'
+      type: "input",
+      name: "projectName",
+      message: "Project name (no spaces)",
+      validate: function (title) {
+        if (title.indexOf(" ") > 0) {
+          return "Project name must not have spaces";
+        }
+
+        if (title.trim() === "") {
+          return "Project name must not be empty";
+        }
+
+        return true;
+      }
     },
     {
-      type: 'confirm',
-      name: 'apiController',
-      message: 'Do you want to create a sample API controller?',
+      type: "confirm",
+      name: "auth",
+      message: "Do you want to add Passport auth support?",
       default: true
     },
     {
-      type: 'confirm',
-      name: 'devController',
-      message: 'Do you want to create a sample Dev controller?',
+      type: "confirm",
+      name: "apiController",
+      message: "Do you want to create an API controller?",
       default: true
     },
     {
-      type: 'confirm',
-      name: 'testController',
-      message: 'Do you want to create a Test controller?',
+      type: "confirm",
+      name: "devController",
+      message: "Do you want to create a Dev controller?",
+      default: true
+    },
+    {
+      type: "confirm",
+      name: "testController",
+      message: "Do you want to create a Test controller?",
       default: true
     }];
 
@@ -42,65 +59,66 @@ module.exports = yeoman.Base.extend({
 
   writing: function () {
     this.fs.copyTpl(
-      this.templatePath('package.json'),
-      this.destinationPath('package.json'),
+      this.templatePath("package.json"),
+      this.destinationPath("package.json"),
       this.props
     );
     
     this.fs.copy(
-      this.templatePath('tsconfig.json'),
-      this.destinationPath('tsconfig.json')
+      this.templatePath("tsconfig.json"),
+      this.destinationPath("tsconfig.json")
     );
 
     this.fs.copy(
-      this.templatePath('.vscode'),
-      this.destinationPath('.vscode')
+      this.templatePath(".vscode"),
+      this.destinationPath(".vscode")
     );
     
     this.fs.copy(
-      this.templatePath('public'),
-      this.destinationPath('public')
+      this.templatePath("public"),
+      this.destinationPath("public")
     );
 
     this.fs.copy(
-      this.templatePath('views'),
-      this.destinationPath('views')
+      this.templatePath("views"),
+      this.destinationPath("views")
     );
     
     this.fs.copyTpl(
-      this.templatePath('app.ts'),
-      this.destinationPath('app.ts'),
+      this.templatePath("app.ts"),
+      this.destinationPath("app.ts"),
       this.props
     );
 
-    this.fs.copy(
-      this.templatePath('controllers/frontend.ts'),
-      this.destinationPath('controllers/frontend.ts')
+    this.fs.copyTpl(
+      this.templatePath("controllers/frontend.ts"),
+      this.destinationPath("controllers/frontend.ts"),
+      this.props
     );
 
     if (this.props.apiController) {
       this.fs.copy(
-        this.templatePath('controllers/api.ts'),
-        this.destinationPath('controllers/api.ts')
+        this.templatePath("controllers/api.ts"),
+        this.destinationPath("controllers/api.ts")
       );
     }
 
     if (this.props.devController) {
       this.fs.copy(
-        this.templatePath('controllers/dev.ts'),
-        this.destinationPath('controllers/dev.ts')
+        this.templatePath("controllers/dev.ts"),
+        this.destinationPath("controllers/dev.ts")
       );
     }
 
     if (this.props.testController) {
       this.fs.copy(
-        this.templatePath('controllers/test.ts'),
-        this.destinationPath('controllers/test.ts')
+        this.templatePath("controllers/test.ts"),
+        this.destinationPath("controllers/test.ts")
       );
 
       this.fs.copy(
-        this.templatePath('tests/fixture.ts'),
-        this.destinationPath('tests/fixture.ts')
+        this.templatePath("tests/fixture.ts"),
+        this.destinationPath("tests/fixture.ts")
       );
     }
   },

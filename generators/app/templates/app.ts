@@ -4,16 +4,18 @@ import * as BodyParser from "body-parser";
 import * as DebugModule from "debug";
 import * as Http from "http";
 import {addControllersToExpressApp} from "kwyjibo";
+<%if (auth) {%>
 import * as Passport from "passport";
 import * as ExpressSession from "express-session";
 import * as PassportLocal from "passport-local";
-
+<%}%>
 export default class App {
 
     private static port: number = App.normalizePort(process.env.port || "3000");
     private static server: Http.Server;
     private static express: Express.Express;
     private static isDevelopment = false;
+    <%if (auth) { %>
     private static securityProvider: SecurityProvider;
 
     public static get authorize(): Express.Handler {
@@ -23,6 +25,7 @@ export default class App {
     public static get authenticate(): Express.Handler {
         return App.securityProvider.getAuthenticateMiddleware()
     }
+    <%}%>
 
     public static init(): void {
         if (process.env.NODE_ENV === "development") {
@@ -37,6 +40,7 @@ export default class App {
         App.express.use(BodyParser.urlencoded({ extended: false }));
         App.express.use(CookieParser());
 
+        <%if (auth) {%>
         App.express.use(ExpressSession({
             secret: "secretSessionKey",
             saveUninitialized: true,
@@ -75,6 +79,9 @@ export default class App {
                 return Passport.authenticate("local");
             }
         }
+        <%
+        }
+        %>
     }
 
     public static start(): void {
@@ -173,9 +180,11 @@ export default class App {
     }
 }
 
+<% if (auth) { %>
 interface SecurityProvider {
     getAuthorizeMiddleware(): Express.Handler;
     getAuthenticateMiddleware(): Express.Handler;
 }
+<%}%>
 App.init();
 App.start();

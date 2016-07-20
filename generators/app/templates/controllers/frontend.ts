@@ -17,6 +17,7 @@ class Root {
         context.response.render("login");
     }
 
+    <%if (auth) {%>
     @Post("/authenticate")
     @DocAction(`Action that triggers the authentication middleware`)
     @ActionMiddleware(App.authenticate)
@@ -31,4 +32,5 @@ class Root {
     onlyForUsers(context: Context): void {
         context.response.render("authorized");
     }
+    <%}%>
 }
