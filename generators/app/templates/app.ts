@@ -23,7 +23,7 @@ export default class App {
     }
 
     public static get authenticate(): Express.Handler {
-        return App.securityProvider.getAuthenticateMiddleware()
+        return App.securityProvider.getAuthenticateMiddleware();
     }
     <%}%>
 
@@ -72,7 +72,7 @@ export default class App {
                     } else {
                         next();
                     }
-                }
+                };
             },
 
             getAuthenticateMiddleware(): Express.Handler {
