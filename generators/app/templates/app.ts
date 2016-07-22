@@ -3,7 +3,7 @@ import * as CookieParser from "cookie-parser";
 import * as BodyParser from "body-parser";
 import * as DebugModule from "debug";
 import * as Http from "http";
-import {addControllersToExpressApp} from "kwyjibo";
+import {initialize} from "kwyjibo";
 <%if (auth) {%>
 import * as Passport from "passport";
 import * as ExpressSession from "express-session";
