@@ -2,7 +2,7 @@ import * as Express from "express";
 import * as CookieParser from "cookie-parser";
 import * as BodyParser from "body-parser";
 import * as Http from "http";
-import {initialize} from "kwyjibo";
+import * as K from "kwyjibo";
 <%if (auth) {%>
 import * as Passport from "passport";
 import * as ExpressSession from "express-session";
@@ -88,8 +88,8 @@ export default class App {
         // Create HTTP server.
         App.server = Http.createServer(App.express);
 
-        // Init all Kwyjibo controllers
-        initialize(App.express, "controllers", "tests");
+        // Init all Kwyjibo controllers, tests, loggers and error handlers
+        K.initialize(App.express);
 
         // Add static files
         App.express.use(Express.static("public"));
