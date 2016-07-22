@@ -1,9 +1,8 @@
 import * as Express from "express";
 import * as CookieParser from "cookie-parser";
 import * as BodyParser from "body-parser";
-import * as DebugModule from "debug";
 import * as Http from "http";
-import {addControllersToExpressApp} from "kwyjibo";
+import {initialize} from "kwyjibo";
 <%if (auth) {%>
 import * as Passport from "passport";
 import * as ExpressSession from "express-session";
@@ -23,7 +22,7 @@ export default class App {
     }
 
     public static get authenticate(): Express.Handler {
-        return App.securityProvider.getAuthenticateMiddleware()
+        return App.securityProvider.getAuthenticateMiddleware();
     }
     <%}%>
 
@@ -72,7 +71,7 @@ export default class App {
                     } else {
                         next();
                     }
-                }
+                };
             },
 
             getAuthenticateMiddleware(): Express.Handler {
@@ -90,43 +89,16 @@ export default class App {
         App.server = Http.createServer(App.express);
 
         // Init all Kwyjibo controllers
-        addControllersToExpressApp(App.express, "controllers", "tests");
+        initialize(App.express, "controllers", "tests");
 
         // Add static files
         App.express.use(Express.static("public"));
-
-        // Use custom errors
-        App.express.use(App.OnRequestError);
-        App.express.use(App.OnRequestNotFound);
 
         // Listen on provided port, on all network interfaces.
         App.express.set("port", App.port);
         App.server.listen(App.port);
         App.server.on("error", App.onError);
         App.server.on("listening", App.onListening);
-    }
-
-    private static OnRequestError(err: any, req: Express.Request, res: Express.Response, next: Function): void {
-        if (err.name === "UnauthorizedError") {
-            res.sendStatus(401);
-        } else {
-            if (App.isDevelopment) {
-                res.statusCode = 500;
-                if (err instanceof Error) {
-                    console.error({ name: err.name, message: err.message, stack: err.stack });
-                    res.json({ name: err.name, message: err.message });
-                } else {
-                    console.error(err);
-                    res.json(err);
-                }
-            } else {
-                res.sendStatus(500);
-            }
-        }
-    }
-
-    private static OnRequestNotFound(req: Express.Request, res: Express.Response, next: Function): void {
-        res.sendStatus(404);
     }
 
     private static normalizePort(val: string): any {
