@@ -1,7 +1,6 @@
 import * as Express from "express";
 import * as CookieParser from "cookie-parser";
 import * as BodyParser from "body-parser";
-import * as DebugModule from "debug";
 import * as Http from "http";
 import {initialize} from "kwyjibo";
 <%if (auth) {%>
