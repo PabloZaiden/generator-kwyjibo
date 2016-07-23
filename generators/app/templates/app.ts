@@ -5,8 +5,8 @@ import * as Http from "http";
 import * as K from "kwyjibo";
 <%if (auth) {%>
 import * as Passport from "passport";
-import * as ExpressSession from "express-session";
 import * as PassportLocal from "passport-local";
+let cookieSession = require("cookie-session");
 <%}%>
 export default class App {
 
@@ -34,16 +34,15 @@ export default class App {
         App.express = Express();
 
         App.express.set("view engine", "ejs");
-
+        App.express.use(Express.static("public"));
         App.express.use(BodyParser.json());
         App.express.use(BodyParser.urlencoded({ extended: false }));
         App.express.use(CookieParser());
 
         <%if (auth) {%>
-        App.express.use(ExpressSession({
+        App.express.use(cookieSession({
             secret: "secretSessionKey",
-            saveUninitialized: true,
-            resave: true
+            name: "session"
         }));
         
         App.express.use(Passport.initialize());
