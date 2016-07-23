@@ -6,7 +6,7 @@ import * as K from "kwyjibo";
 <%if (auth) {%>
 import * as Passport from "passport";
 import * as PassportLocal from "passport-local";
-let cookieSession = require("cookie-session");
+import cookieSession = require("cookie-session");
 <%}%>
 export default class App {
 
