@@ -68,6 +68,11 @@ module.exports = yeoman.Base.extend({
     );
 
     this.fs.copy(
+      this.templatePath("Dockerfile"),
+      this.destinationPath("Dockerfile")
+    );
+
+    this.fs.copy(
       this.templatePath(".vscode"),
       this.destinationPath(".vscode")
     );
