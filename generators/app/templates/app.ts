@@ -87,11 +87,11 @@ export default class App {
         // Create HTTP server.
         App.server = Http.createServer(App.express);
 
-        // Init all Kwyjibo controllers, tests, loggers and error handlers
-        K.initialize(App.express);
-
         // Add static files
         App.express.use(Express.static("public"));
+
+        // Init all Kwyjibo controllers, tests, loggers and error handlers
+        K.initialize(App.express);
 
         // Listen on provided port, on all network interfaces.
         App.express.set("port", App.port);
