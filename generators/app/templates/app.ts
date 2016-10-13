@@ -33,8 +33,12 @@ export default class App {
 
         App.express = Express();
 
-        App.express.set("view engine", "ejs");
-        App.express.use(Express.static("public"));
+        App.express.set("view engine", "hbs");
+        let hbs = require("hbs");
+
+        hbs.registerPartials(__dirname + "/views/partials");
+
+        App.express.set("trust proxy", true);
         App.express.use(BodyParser.json());
         App.express.use(BodyParser.urlencoded({ extended: false }));
         App.express.use(CookieParser());
@@ -87,11 +91,10 @@ export default class App {
         // Create HTTP server.
         App.server = Http.createServer(App.express);
 
+        App.express.use(Express.static("public"));
+
         // Init all Kwyjibo controllers, tests, loggers and error handlers
         K.initialize(App.express);
-
-        // Add static files
-        App.express.use(Express.static("public"));
 
         // Listen on provided port, on all network interfaces.
         App.express.set("port", App.port);
