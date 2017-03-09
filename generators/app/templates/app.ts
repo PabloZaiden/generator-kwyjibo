@@ -10,7 +10,7 @@ import cookieSession = require("cookie-session");
 <%}%>
 export default class App {
 
-    private static port: number = App.normalizePort(process.env.port || "3000");
+    private static port: number = normalizePort(process.env.port || "3000");
     private static server: Http.Server;
     private static express: Express.Express;
     private static isDevelopment = false;
@@ -103,22 +103,6 @@ export default class App {
         App.server.on("listening", App.onListening);
     }
 
-    private static normalizePort(val: string): any {
-        let port = parseInt(val, 10);
-
-        if (isNaN(port)) {
-            // named pipe
-            return val;
-        }
-
-        if (port >= 0) {
-            // port number
-            return port;
-        }
-
-        return false;
-    }
-
     private static onError(error: any): void {
 
         if (error.syscall !== "listen") {
@@ -160,5 +144,22 @@ interface SecurityProvider {
     getAuthenticateMiddleware(): Express.Handler;
 }
 <%}%>
+
+function static normalizePort(val: string): any {
+    let port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
 App.init();
 App.start();

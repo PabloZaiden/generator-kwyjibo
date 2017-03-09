@@ -4,7 +4,7 @@ import App from "../app";
 
 @Controller("/frontend")
 @DocController("Sample frontend Controller.")
-class Root {
+class Frontend {
 
     @Get("/")
     @DocAction(`Sample index`)

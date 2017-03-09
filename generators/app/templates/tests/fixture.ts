@@ -12,6 +12,8 @@ export default class Fixture {
         return new Promise<void>((resolve, reject) => {
             if (1 !== 1) {
                 reject (new Error("equality is failing!!!"))
+            } else {
+                resolve();
             }
         });
     }
