@@ -145,7 +145,7 @@ interface SecurityProvider {
 }
 <%}%>
 
-function static normalizePort(val: string): any {
+function normalizePort(val: string): any {
     let port = parseInt(val, 10);
 
     if (isNaN(port)) {
